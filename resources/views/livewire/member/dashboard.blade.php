@@ -54,7 +54,11 @@
                                 </div>
                             @else
                                 <div class="col-md-4 d-flex justify-content-start align-items-center row mx-md-0">
-                                        <h1 class="fw-bolder text-warning display-4">Belum Lunas</h1>
+                                    @if ($product_name)
+                                        <h1 class="fw-bolder text-warning display-4">Belum Lunas</h1>    
+                                    @else
+                                        <h1 class="fw-bolder text-warning display-4">Belum Terdaftar</h1>
+                                    @endif
                                 </div>
                             @endif
                             <!--end::Container-->
