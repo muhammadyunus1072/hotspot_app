@@ -27,11 +27,17 @@ class Dashboard extends Component
             $this->date = Carbon::now()->format('d F Y');
             $this->user_id = Crypt::encrypt(UserHelper::id());
             $data = MemberRepository::getData($this->user_id, );
-            $this->product_name = $data['product']['name'];
-            $this->product_description = $data['product']['description'];
-            $this->product_price = NumberFormatter::format($data['product']['price']);
+            if($data['prodcut'])
+            {
+                $this->product_name = $data['product']['name'];
+                $this->product_description = $data['product']['description'];
+                $this->product_price = NumberFormatter::format($data['product']['price']);
+            }
+            if($data['transaction'])
+            {
+                $this->monthly_hotspot_status = $data['transaction']['status_name'];
+            }
 
-            $this->monthly_hotspot_status = $data['transaction']['status_name'];
         }
     }
 
