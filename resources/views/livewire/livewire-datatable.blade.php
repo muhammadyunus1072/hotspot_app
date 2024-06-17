@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-6 mb-2 {{ !isset($keyword_filter) || $keyword_filter == true ? '' : 'd-none' }}">
             <label>Kata Kunci</label>
-            <input wire:model.change="search" type="text" class="form-control">
+            <input wire:model.live="search" type="text" class="form-control">
         </div>
     </div>
 

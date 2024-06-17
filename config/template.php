@@ -31,6 +31,7 @@ return [
             'route'  => 'dashboard.index',
             'icon' => 'ki-duotone ki-element-11',
         ],
+        // ADMIN
         [
             'text' => 'Admin',
             'icon' => 'ki-duotone ki-shield-tick',
@@ -51,6 +52,38 @@ return [
                     'icon_color' => 'primary',
                 ],
             ],
+        ],
+        [
+            'text' => 'Hotspot Bulanan',
+            'route'  => 'monthly_hotspot.index',
+            'icon' => 'ki-duotone ki-element-11',
+        ],
+        [
+            'text' => 'Produk',
+            'route'  => 'product.index',
+            'icon' => 'ki-duotone ki-element-11',
+        ],
+        [
+            'text' => 'Hotspot Member',
+            'route'  => 'hotspot_member.index',
+            'icon' => 'ki-duotone ki-element-11',
+        ],
+        [
+            'text' => 'Transaksi',
+            'route'  => 'transaction.index',
+            'icon' => 'ki-duotone ki-element-11',
+        ],
+        [
+            'text' => 'Metode Pembayaran',
+            'route'  => 'payment_method.index',
+            'icon' => 'ki-duotone ki-element-11',
+        ],
+
+        // MEMBER
+        [
+            'text' => 'Tagihan Saya',
+            'route'  => 'bill.index',
+            'icon' => 'ki-duotone ki-element-11',
         ],
     ],
 ];

@@ -16,7 +16,12 @@ use App\Http\Controllers\DashboardController;
 
 Route::group([], __DIR__ . '/web/Auth.php');
 Route::group([], __DIR__ . '/web/Other.php');
-Route::group([], __DIR__ . '/web/Account.php');
+// Admin
+Route::group([], __DIR__ . '/web/Admin/Account.php');
+Route::group([], __DIR__ . '/web/Admin/Product.php');
+Route::group([], __DIR__ . '/web/Admin/Transaction.php');
+// Member
+Route::group([], __DIR__ . '/web/Member/Transaction.php');
 
 Route::middleware(['auth', 'access_permission'])->group(function () {
     Route::group(["controller" => DashboardController::class, "prefix" => "dashboard", "as" => "dashboard."], function () {

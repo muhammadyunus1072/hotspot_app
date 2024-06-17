@@ -24,6 +24,14 @@ class RolesAndPermissionsSeeder extends Seeder
             PermissionHelper::ACCESS_USER => PermissionHelper::TYPE_ALL,
             PermissionHelper::ACCESS_ROLE => PermissionHelper::TYPE_ALL,
             PermissionHelper::ACCESS_PERMISSION => PermissionHelper::TYPE_ALL,
+
+            Permission::ACCESS_MONTHLY_HOTSPOT => Permission::TYPE_ALL,
+            Permission::ACCESS_PRODUCT => Permission::TYPE_ALL,
+            Permission::ACCESS_PAYMENT_METHOD => Permission::TYPE_ALL,
+            Permission::ACCESS_TRANSACTION => Permission::TYPE_ALL,
+            Permission::ACCESS_HOTSPOT_MEMBER => Permission::TYPE_ALL,
+
+            Permission::ACCESS_BILL => Permission::TYPE_ALL,
         ];
         foreach ($permissions as $access => $types) {
             foreach ($types as $type) {
@@ -38,9 +46,16 @@ class RolesAndPermissionsSeeder extends Seeder
                 PermissionHelper::ACCESS_USER => PermissionHelper::TYPE_ALL,
                 PermissionHelper::ACCESS_PERMISSION => PermissionHelper::TYPE_ALL,
                 PermissionHelper::ACCESS_ROLE => PermissionHelper::TYPE_ALL,
+                
+                Permission::ACCESS_MONTHLY_HOTSPOT => Permission::TYPE_ALL,
+                Permission::ACCESS_PRODUCT => Permission::TYPE_ALL,
+                Permission::ACCESS_PAYMENT_METHOD => Permission::TYPE_ALL,
+                Permission::ACCESS_TRANSACTION => Permission::TYPE_ALL,
+                Permission::ACCESS_HOTSPOT_MEMBER => Permission::TYPE_ALL,
             ],
             "Member" => [
-                PermissionHelper::ACCESS_DASHBOARD => [PermissionHelper::TYPE_READ]
+                PermissionHelper::ACCESS_DASHBOARD => [PermissionHelper::TYPE_READ],
+                PermissionHelper::ACCESS_BILL => [PermissionHelper::TYPE_READ]
             ]
         ];
         foreach ($roles as $name => $permissions) {

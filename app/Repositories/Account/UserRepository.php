@@ -2,10 +2,12 @@
 
 namespace App\Repositories\Account;
 
-use App\Helpers\MenuHelper;
 use App\Models\User;
-use App\Repositories\MasterDataRepository;
+use App\Helpers\MenuHelper;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\MasterDataRepository;
+use App\Repositories\Transaction\HotspotMemberRepository;
 
 class UserRepository extends MasterDataRepository
 {
@@ -49,5 +51,54 @@ class UserRepository extends MasterDataRepository
                     $query->whereId($roleId);
                 });
             });
+    }
+
+    public static function search($search)
+    {
+        $data = User::select(
+                'id',
+                'name',
+            )
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%");
+                });
+            })
+            ->role('Member')
+            ->orderBy('name', 'ASC')
+            ->limit(100)
+            ->get();
+
+        $response = array();
+
+        foreach ($data as $res) {
+            array_push($response, ['id' => $res->id, 'text' => "$res->name"]);
+        }
+        return $response;
+    }
+    public static function search_member($search)
+    {
+        $hotspot_members = HotspotMemberRepository::get()->pluck('user_id');
+        $data = User::select(
+                'id',
+                'name',
+            )
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%$search%");
+                });
+            })
+            ->whereNotIn('id', $hotspot_members)
+            ->role('Member')
+            ->orderBy('name', 'ASC')
+            ->limit(100)
+            ->get();
+
+        $response = array();
+
+        foreach ($data as $res) {
+            array_push($response, ['id' => $res->id, 'text' => "$res->name"]);
+        }
+        return $response;
     }
 }

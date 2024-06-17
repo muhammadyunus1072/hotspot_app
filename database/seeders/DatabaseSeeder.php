@@ -4,9 +4,10 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use Database\Seeders\User\RolesAndPermissionsSeeder;
-use Database\Seeders\User\UserSeeder;
 use Illuminate\Database\Seeder;
+use Database\Seeders\User\UserSeeder;
+use Database\Seeders\Transaction\PaymentMethodSeeder;
+use Database\Seeders\User\RolesAndPermissionsSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
             UserSeeder::class,
+            PaymentMethodSeeder::class,
         ]);
     }
 }

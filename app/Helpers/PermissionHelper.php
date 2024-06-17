@@ -30,18 +30,47 @@ class PermissionHelper
     const ACCESS_USER = "user";
     const ACCESS_PERMISSION = "permission";
     const ACCESS_ROLE = "role";
+    
+    // ADMIN
+    const ACCESS_MONTHLY_HOTSPOT = "monthly_hotspot";
+    const ACCESS_PRODUCT = "product";
+    const ACCESS_PAYMENT_METHOD = "payment_method";
+    const ACCESS_TRANSACTION = "transaction";
+    const ACCESS_HOTSPOT_MEMBER = "hotspot_member";
+    
+    // MEMBER
+    const ACCESS_BILL = "bill";
     const ACCESS_ALL = [
+        // ADMIN
         self::ACCESS_DASHBOARD,
         self::ACCESS_USER,
         self::ACCESS_PERMISSION,
         self::ACCESS_ROLE,
+        self::ACCESS_MONTHLY_HOTSPOT,
+        self::ACCESS_PRODUCT,
+        self::ACCESS_PAYMENT_METHOD,
+        self::ACCESS_TRANSACTION,
+        self::ACCESS_HOTSPOT_MEMBER,
+        self::ACCESS_HOTSPOT_MEMBER,
+        
+        // MEMBER
+        self::ACCESS_BILL,
     ];
 
     const TRANSLATE_ACCESS = [
+        // ADMIN
         self::ACCESS_DASHBOARD => "Dashboard",
         self::ACCESS_USER => "Pengguna",
         self::ACCESS_PERMISSION => "Akses",
         self::ACCESS_ROLE => "Jabatan",
+        self::ACCESS_MONTHLY_HOTSPOT => "Hotspot Bulanan",
+        self::ACCESS_PRODUCT => "Produk",
+        self::ACCESS_PAYMENT_METHOD => "Metode Pembayaran",
+        self::ACCESS_TRANSACTION => "Transaksi",
+        self::ACCESS_HOTSPOT_MEMBER => "Member Hotspot",
+
+        // MEMBER
+        self::ACCESS_BILL => "Tagihan Saya",
     ];
 
 
