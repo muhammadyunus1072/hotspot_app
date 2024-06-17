@@ -24,8 +24,7 @@ class MemberRepository
         ->where('hotspot_members.user_id', '=', $user_id)
         ->whereNull('hotspot_members.deleted_at')
         ->whereNull('products.deleted_at')
-        ->first()
-        ->toArray();
+        ->first();
         $data['product'] = $paket;
 
         $this_month = Carbon::now()->month;
@@ -36,6 +35,6 @@ class MemberRepository
         ->first();
 
         $data['transaction'] = $transaction;
-        return $data;
+        return $data->toArray();
     }
 }
