@@ -27,7 +27,7 @@ class Dashboard extends Component
             $this->date = Carbon::now()->format('d F Y');
             $this->user_id = Crypt::encrypt(UserHelper::id());
             $data = MemberRepository::getData($this->user_id, );
-            if($data['prodcut'])
+            if($data['product'])
             {
                 $this->product_name = $data['product']['name'];
                 $this->product_description = $data['product']['description'];
