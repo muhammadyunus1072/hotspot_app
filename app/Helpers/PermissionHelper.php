@@ -51,7 +51,6 @@ class PermissionHelper
         self::ACCESS_PAYMENT_METHOD,
         self::ACCESS_TRANSACTION,
         self::ACCESS_HOTSPOT_MEMBER,
-        self::ACCESS_HOTSPOT_MEMBER,
         
         // MEMBER
         self::ACCESS_BILL,

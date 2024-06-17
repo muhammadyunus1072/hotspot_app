@@ -25,13 +25,13 @@ class RolesAndPermissionsSeeder extends Seeder
             PermissionHelper::ACCESS_ROLE => PermissionHelper::TYPE_ALL,
             PermissionHelper::ACCESS_PERMISSION => PermissionHelper::TYPE_ALL,
 
-            Permission::ACCESS_MONTHLY_HOTSPOT => Permission::TYPE_ALL,
-            Permission::ACCESS_PRODUCT => Permission::TYPE_ALL,
-            Permission::ACCESS_PAYMENT_METHOD => Permission::TYPE_ALL,
-            Permission::ACCESS_TRANSACTION => Permission::TYPE_ALL,
-            Permission::ACCESS_HOTSPOT_MEMBER => Permission::TYPE_ALL,
+            PermissionHelper::ACCESS_MONTHLY_HOTSPOT => PermissionHelper::TYPE_ALL,
+            PermissionHelper::ACCESS_PRODUCT => PermissionHelper::TYPE_ALL,
+            PermissionHelper::ACCESS_PAYMENT_METHOD => PermissionHelper::TYPE_ALL,
+            PermissionHelper::ACCESS_TRANSACTION => PermissionHelper::TYPE_ALL,
+            PermissionHelper::ACCESS_HOTSPOT_MEMBER => PermissionHelper::TYPE_ALL,
 
-            Permission::ACCESS_BILL => Permission::TYPE_ALL,
+            PermissionHelper::ACCESS_BILL => PermissionHelper::TYPE_ALL,
         ];
         foreach ($permissions as $access => $types) {
             foreach ($types as $type) {
@@ -47,11 +47,11 @@ class RolesAndPermissionsSeeder extends Seeder
                 PermissionHelper::ACCESS_PERMISSION => PermissionHelper::TYPE_ALL,
                 PermissionHelper::ACCESS_ROLE => PermissionHelper::TYPE_ALL,
                 
-                Permission::ACCESS_MONTHLY_HOTSPOT => Permission::TYPE_ALL,
-                Permission::ACCESS_PRODUCT => Permission::TYPE_ALL,
-                Permission::ACCESS_PAYMENT_METHOD => Permission::TYPE_ALL,
-                Permission::ACCESS_TRANSACTION => Permission::TYPE_ALL,
-                Permission::ACCESS_HOTSPOT_MEMBER => Permission::TYPE_ALL,
+                PermissionHelper::ACCESS_MONTHLY_HOTSPOT => PermissionHelper::TYPE_ALL,
+                PermissionHelper::ACCESS_PRODUCT => PermissionHelper::TYPE_ALL,
+                PermissionHelper::ACCESS_PAYMENT_METHOD => PermissionHelper::TYPE_ALL,
+                PermissionHelper::ACCESS_TRANSACTION => PermissionHelper::TYPE_ALL,
+                PermissionHelper::ACCESS_HOTSPOT_MEMBER => PermissionHelper::TYPE_ALL,
             ],
             "Member" => [
                 PermissionHelper::ACCESS_DASHBOARD => [PermissionHelper::TYPE_READ],
