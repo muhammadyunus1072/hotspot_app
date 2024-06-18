@@ -34,6 +34,7 @@ class Checkout extends Component
     public $payment_method_id;
     public $payment_method_name;
     public $snapToken;
+    public $a;
 
     public $transaction = [];
 
@@ -61,11 +62,11 @@ class Checkout extends Component
             $id = Crypt::decrypt($this->objId);
             $transaction = BillRepository::findTransaction($id);
             if ($transaction->payment_method_id && $transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
+                $this->a = $transaction->details->sum('product_price');
                 if (!$transaction->snap_token) {
-                    $amount = $transaction->details->sum('product_price');
                     $snapToken = MidtransPayment::getSnapToken(
                         $transaction->id,
-                        $amount,
+                        $transaction->details->sum('product_price'),
                         [
                             'first_name' => $transaction->user->name,
                             'last_name' => '',
