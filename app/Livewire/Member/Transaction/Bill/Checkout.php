@@ -73,10 +73,16 @@ class Checkout extends Component
                             'phone' => $transaction->user->phone,
                         ]
                     );
-                    $transaction->snap_token = $snapToken;
-                    $transaction->save();
+
+                    $validatedData = [
+                        'snap_token' => $snap_token,
+                    ];
+                    TransactionRepository::update($id, $validatedData);
+                    $this->snapToken = $snap_token;
+                }else{
+
+                    $this->snapToken = $transaction->snap_token;
                 }
-                $this->snapToken = $transaction->snap_token;
             } 
             $this->transaction = $transaction;
         }
