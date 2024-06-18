@@ -2,7 +2,7 @@
     <script type="text/javascript" src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 @endpush
 <div class="page-section">
-    
+    {{dd($snap_token)}}
     <div class="page-separator">
         <div class="page-separator__text">{{ __('Transaction Histories') }}</div>
     </div>
