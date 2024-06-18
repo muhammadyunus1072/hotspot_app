@@ -13,12 +13,6 @@
                 <div class="d-flex flex-center flex-column flex-column-fluid pb-15 pb-lg-20">
                     <livewire:auth.login />
 
-                    @if (config('template.forgot_password_route'))
-                        <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
-                            <a href="{{ route(config('template.forgot_password_route')) }}" class="link-primary">Forgot Password ?</a>
-                        </div>
-                    @endif
-
                     @if (config('template.registration_route'))
                         <div class="text-gray-500 text-center fw-semibold fs-6">
                             Not a Member yet?

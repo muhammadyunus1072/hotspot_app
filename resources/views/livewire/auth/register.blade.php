@@ -40,6 +40,19 @@
         @enderror
         <!--end::Email-->
     </div>
+    <!--begin::Input group=-->
+    <div class="fv-row mb-8">
+        <!--begin::Email-->
+        <input type="text" placeholder="Phone" wire:model="phone" autocomplete="off"
+            class="form-control bg-transparent @error('phone') is-invalid @enderror" />
+
+        @error('phone')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+        <!--end::Email-->
+    </div>
     <!--end::Input group=-->
     <!--begin::Input group=-->
     <div class="fv-row mb-8">

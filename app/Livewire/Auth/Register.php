@@ -18,6 +18,9 @@ class Register extends Component
     #[Validate('email', message: "Format Email Tidak Sesuai", onUpdate: false)]
     public $email;
 
+    #[Validate('required', message: 'Phone Harus Diisi', onUpdate: false)]
+    public $phone;
+
     #[Validate('required', message: 'Password Harus Diisi', onUpdate: false)]
     public $password;
 
@@ -47,6 +50,7 @@ class Register extends Component
         $user = UserRepository::create([
             'name' => $this->name,
             'email' => $this->email,
+            'phone' => $this->phone,
             'password' => Hash::make($this->password),
         ]);
         $user->assignRole(config('template.registration_default_role'));

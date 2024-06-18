@@ -22,6 +22,17 @@
             @enderror
         </div>
 
+        <div class="col-md-6 mb-4">
+            <label>Phone</label>
+            <input type="text" class="form-control @error('phone') is-invalid @enderror" wire:model.blur="phone" />
+
+            @error('phone')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
         <div class="col-md-12 mb-4">
             <label>Jabatan</label>
             <select class="form-select @error('role') is-invalid @enderror" wire:model.blur="role">

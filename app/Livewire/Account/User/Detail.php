@@ -22,9 +22,11 @@ class Detail extends Component
     #[Validate('required', message: 'Nama Harus Diisi', onUpdate: false)]
     public $name;
 
-    #[Validate('required', message: 'Email Harus Diisi', onUpdate: false)]
     #[Validate('email', message: "Format Email Tidak Sesuai", onUpdate: false)]
     public $email;
+
+    #[Validate('required', message: 'Phone Harus Diisi', onUpdate: false)]
+    public $phone;
 
     #[Validate('required', message: 'Jabatan Harus Dipilih', onUpdate: false)]
     public $role;
@@ -43,6 +45,7 @@ class Detail extends Component
 
             $this->name = $user->name;
             $this->email = $user->email;
+            $this->phone = $user->phone;
             $this->role = $user->roles[0]->name;
         }
     }
@@ -81,6 +84,7 @@ class Detail extends Component
         $validatedData = [
             'name' => $this->name,
             'email' => $this->email,
+            'phone' => $this->phone,
         ];
         if (!empty($this->password)) {
             $validatedData['password'] = Hash::make($this->password);
