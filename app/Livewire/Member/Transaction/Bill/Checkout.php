@@ -40,16 +40,15 @@ class Checkout extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        $this->name = "";
-        $this->description = "";
-        $this->price = 0;
-        $this->price_before_discount = 0;
+        if ($this->objId) {
+            $this->redirectRoute('bill.checkout', $this->objId);
+        } 
     }
 
     #[On('on-dialog-cancel')]
     public function onDialogCancel()
     {
-        $this->redirectRoute('transaction.index');
+        $this->redirectRoute('bill.checkout');
     }
 
     public function mount()

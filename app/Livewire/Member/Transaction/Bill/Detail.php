@@ -42,16 +42,16 @@ class Detail extends Component
     public function onDialogConfirm()
     {
         if ($this->objId) {
-            $this->redirectRoute('transaction.edit', $this->objId);
+            $this->redirectRoute('bill.edit', $this->objId);
         } else {
-            $this->redirectRoute('transaction.create');
+            $this->redirectRoute('bill.create');
         }
     }
 
     #[On('on-dialog-cancel')]
     public function onDialogCancel()
     {
-        $this->redirectRoute('transaction.index');
+        $this->redirectRoute('bill.index');
     }
 
     public function mount()
@@ -64,7 +64,7 @@ class Detail extends Component
             $transaction = TransactionRepository::findWithDetail($id)->toArray();
             if($transaction['payment_method_id'] != PaymentMethod::MIDTRANS_ID)
             {
-                return redirect()->route('bill.checkout');
+                $this->redirectRoute('bill.checkout', $this->objId);
             }
             $this->user_id = $transaction['user']['id'];
             $this->user_text = $transaction['user']['name'];
@@ -147,7 +147,7 @@ class Detail extends Component
 
             if($transaction->payment_method_id != PaymentMethod::MIDTRANS_ID)
             {
-                return redirect()->route('bill.checkout');
+                $this->redirectRoute('bill.checkout', $this->objId);
             }else{
                 Alert::confirmation(
                     $this,
