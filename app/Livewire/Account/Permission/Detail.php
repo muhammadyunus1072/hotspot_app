@@ -4,12 +4,13 @@ namespace App\Livewire\Account\Permission;
 
 use Exception;
 use App\Helpers\Alert;
-use App\Helpers\PermissionHelper;
-use App\Repositories\Account\PermissionRepository;
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
+use App\Helpers\PermissionHelper;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
+use App\Repositories\Account\PermissionRepository;
 
 
 class Detail extends Component
@@ -25,7 +26,8 @@ class Detail extends Component
     public function mount()
     {
         if ($this->objId) {
-            $permission = PermissionRepository::find($this->objId);
+            $id = Crypt::decrypt($this->objId);
+            $permission = PermissionRepository::find($id);
 
             $permissionName = explode(PermissionHelper::SEPARATOR, $permission->name);
             $this->name = $permissionName[0];
@@ -36,8 +38,11 @@ class Detail extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        $this->name = "";
-        $this->type = PermissionHelper::TYPE_ALL[0];
+        if ($this->objId) {
+            $this->redirectRoute('permission.edit', $this->objId);
+        } else {
+            $this->redirectRoute('permission.create');
+        }
     }
 
     #[On('on-dialog-cancel')]
@@ -66,7 +71,8 @@ class Detail extends Component
         try {
             DB::beginTransaction();
             if ($this->objId) {
-                PermissionRepository::update($this->objId, $validatedData);
+                $id = Crypt::decrypt($this->objId);
+                PermissionRepository::update($id, $validatedData);
             } else {
                 PermissionRepository::create($validatedData);
             }

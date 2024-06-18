@@ -4,13 +4,14 @@ namespace App\Livewire\Account\User;
 
 use Exception;
 use App\Helpers\Alert;
-use App\Repositories\Account\RoleRepository;
-use App\Repositories\Account\UserRepository;
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
+use App\Repositories\Account\RoleRepository;
+use App\Repositories\Account\UserRepository;
 
 class Detail extends Component
 {
@@ -37,7 +38,8 @@ class Detail extends Component
         $this->role = $this->roles[0];
 
         if ($this->objId) {
-            $user = UserRepository::find($this->objId);
+            $id = Crypt::decrypt($this->objId);
+            $user = UserRepository::find($id);
 
             $this->name = $user->name;
             $this->email = $user->email;
@@ -48,10 +50,11 @@ class Detail extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        $this->name = "";
-        $this->email = "";
-        $this->role = $this->roles[0];
-        $this->password = "";
+        if ($this->objId) {
+            $this->redirectRoute('user.edit', $this->objId);
+        } else {
+            $this->redirectRoute('user.create');
+        }
     }
 
     #[On('on-dialog-cancel')]
@@ -86,8 +89,9 @@ class Detail extends Component
         try {
             DB::beginTransaction();
             if ($this->objId) {
-                UserRepository::update($this->objId, $validatedData);
-                $user = UserRepository::find($this->objId);
+                $id = Crypt::decrypt($this->objId);
+                UserRepository::update($id, $validatedData);
+                $user = UserRepository::find($id);
                 $user->syncRoles($this->role);
             } else {
                 $user = UserRepository::create($validatedData);

@@ -10,6 +10,7 @@ use App\Traits\WithDatatable;
 use App\Models\MonthlyHotspot;
 use App\Helpers\NumberFormatter;
 use App\Helpers\PermissionHelper;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Builder;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\Product\ProductRepository;
@@ -37,8 +38,8 @@ class Datatable extends Component
         if (!$this->isCanDelete || $this->targetDeleteId == null) {
             return;
         }
-
-        ProductRepository::delete($this->targetDeleteId);
+        $id = Crypt::decrypt($this->targetDeleteId);
+        ProductRepository::delete($id);
         Alert::success($this, 'Berhasil', 'Data berhasil dihapus');
     }
 
@@ -72,12 +73,12 @@ class Datatable extends Component
                 'sortable' => false,
                 'searchable' => false,
                 'render' => function ($item) {
-                      
+                    $id = Crypt::encrypt($item->id);
                     $editHtml = "";
                     if ($this->isCanUpdate) {
                         if ($item->remarks_type !== MonthlyHotspot::class)
                         {
-                            $editUrl = route('product.edit', $item->id);
+                            $editUrl = route('product.edit', $id);
                             $editHtml = "<div class='col-auto mb-2'>
                                 <a class='btn btn-primary btn-sm' href='$editUrl'>
                                     <i class='ki-duotone ki-notepad-edit fs-1'>
@@ -94,7 +95,7 @@ class Datatable extends Component
                     if ($this->isCanDelete) {
                         $destroyHtml = "<div class='col-auto mb-2'>
                             <button class='btn btn-danger btn-sm m-0' 
-                                wire:click=\"showDeleteDialog($item->id)\">
+                                wire:click=\"showDeleteDialog($id)\">
                                 <i class='ki-duotone ki-trash fs-1'>
                                     <span class='path1'></span>
                                     <span class='path2'></span>

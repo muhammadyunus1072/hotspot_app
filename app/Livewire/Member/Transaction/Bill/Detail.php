@@ -12,6 +12,7 @@ use App\Helpers\PermissionHelper;
 use App\Models\TransactionStatus;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\Member\Transaction\BillRepository;
 use App\Repositories\Transaction\TransactionRepository;
@@ -40,10 +41,11 @@ class Detail extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        $this->name = "";
-        $this->description = "";
-        $this->price = 0;
-        $this->price_before_discount = 0;
+        if ($this->objId) {
+            $this->redirectRoute('transaction.edit', $this->objId);
+        } else {
+            $this->redirectRoute('transaction.create');
+        }
     }
 
     #[On('on-dialog-cancel')]
@@ -55,10 +57,15 @@ class Detail extends Component
     public function mount()
     {
         $authUser = UserRepository::authenticatedUser();
-        $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_PRODUCT, PermissionHelper::TYPE_UPDATE));
+        $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_BILL, PermissionHelper::TYPE_UPDATE));
         if($this->objId)
         {
-            $transaction = TransactionRepository::findWithDetail($this->objId)->toArray();
+            $id = Crypt::decrypt($this->objId);
+            $transaction = TransactionRepository::findWithDetail($id)->toArray();
+            if($transaction['payment_method_id'] != PaymentMethod::MIDTRANS_ID)
+            {
+                return redirect()->route('bill.checkout');
+            }
             $this->user_id = $transaction['user']['id'];
             $this->user_text = $transaction['user']['name'];
 
@@ -102,21 +109,20 @@ class Detail extends Component
 
     public function store()
     {
-        $this->dispatch('consoleLog', $this->payment_method_id);
-        $this->dispatch('consoleLog', $this->status);
         $this->validate();
         try {
             DB::beginTransaction();
 
             // Course Detail
             if ($this->objId) {
+                $id = Crypt::decrypt($this->objId);
                 $validatedData = [
                     'payment_method_id' => $this->payment_method_id,
                 ];
-                TransactionRepository::update($this->objId, $validatedData);
+                $transaction =TransactionRepository::update($id, $validatedData);
 
                 $validatedData = [
-                    'transaction_id' => $this->objId,
+                    'transaction_id' => $id,
                     'name' => $this->status,
                     'description' => $this->status,
                 ];
@@ -126,11 +132,11 @@ class Detail extends Component
                     'user_id' => $this->user_id,
                 ];
                 $transaction = TransactionRepository::create($validatedData);
-                $this->objId = $transaction->id;
+                
 
                 foreach ($this->transaction_details as $transaction_detail) {
                     $validatedData = [
-                        'transaction_id' => $this->objId,
+                        'transaction_id' => $transaction->id,
                         'product_id' => $transaction_detail['product_id'],
                         'qty' => $transaction_detail['qty'],
                     ];
@@ -139,16 +145,21 @@ class Detail extends Component
             }
             DB::commit();
 
-            Alert::confirmation(
-                $this,
-                Alert::ICON_SUCCESS,
-                "Berhasil",
-                "Data Berhasil Diperbarui",
-                "on-dialog-confirm",
-                "on-dialog-cancel",
-                "Oke",
-                "Tutup",
-            );
+            if($transaction->payment_method_id != PaymentMethod::MIDTRANS_ID)
+            {
+                return redirect()->route('bill.checkout');
+            }else{
+                Alert::confirmation(
+                    $this,
+                    Alert::ICON_SUCCESS,
+                    "Berhasil",
+                    "Data Berhasil Diperbarui",
+                    "on-dialog-confirm",
+                    "on-dialog-cancel",
+                    "Oke",
+                    "Tutup",
+                );
+            }
         } catch (Exception $e) {
             DB::rollBack();
             Alert::fail($this, "Gagal", $e->getMessage());

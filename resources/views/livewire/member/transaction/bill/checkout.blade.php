@@ -82,26 +82,6 @@
                                                 </p>
                                             </td>
                                         </tr>
-                                        {{-- @if (count($transactionDetail->courses))
-                                            <tr>
-                                                <td colspan="2">
-                                                    <h6 class="my-0 py-0 ml-3 fw-bold">{{ __('Offline Training') }}
-                                                    </h6>
-
-                                                    <ul
-                                                        class="list-group list-group-custom list-group-flush my-0 py-0 ml-3">
-                                                        @foreach ($transactionDetail->courses as $course)
-                                                            <li
-                                                                class="list-group-item d-flex justify-content-between my-0 py-0">
-                                                                <p class="my-0 py-0">
-                                                                    - {{ $course->course_title }}
-                                                                </p>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        @endif --}}
                                     @endforeach
                                     <tr>
                                         <td class="card-title text-right">
@@ -205,18 +185,6 @@
                     Livewire.emit('onFailSweetAlert', "{{ __('Payment Closed') }}");
                 }
             });
-
-            // window.snap.pay(snapToken, {
-            //     onSuccess: function(result) {
-            //         // window.location.href = "{{ route('bill.index') }}";
-            //     },
-            //     onError: function(result) {
-            //         // Livewire.emit('onFailSweetAlert', "{{ __('Payment Fail') }}");
-            //     },
-            //     onClose: function() {
-            //         // Livewire.emit('onFailSweetAlert', "{{ __('Payment Closed') }}");
-            //     }
-            // })
         });
         
         window.addEventListener('openConfirmCancellationModal', event => {

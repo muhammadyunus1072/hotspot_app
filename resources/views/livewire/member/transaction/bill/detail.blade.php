@@ -56,19 +56,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 row mt-3">
-                    <div class="row d-flex justify-content-start ms-3">
-                        <div class="col-md-6 mb-3">
-                            <label class="mb-1">Status</label>
-                            
-                            <select class="form-select" wire:model.blur="status">
-                                @foreach (\App\Models\TransactionStatus::STATUS_CHOICE as $key => $name)
-                                    <option value="{{$key}}" {{($key == $status) ? "selected" : ""}}>{{$name}}</option>
-                                @endforeach
-                            </select>
+                @if (\App\Helpers\UserHelper::role() == \App\Models\User::ROLE_ADMIN)
+                    <div class="col-md-12 row mt-3">
+                        <div class="row d-flex justify-content-start ms-3">
+                            <div class="col-md-6 mb-3">
+                                <label class="mb-1">Status</label>
+                                
+                                <select class="form-select" wire:model.blur="status">
+                                    @foreach (\App\Models\TransactionStatus::STATUS_CHOICE as $key => $name)
+                                        <option value="{{$key}}" {{($key == $status) ? "selected" : ""}}>{{$name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @endif
 
     </div>

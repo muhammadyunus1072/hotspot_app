@@ -30,6 +30,11 @@ class Detail extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
+        if ($this->objId) {
+            $this->redirectRoute('monthly_hotspot.edit', $this->objId);
+        } else {
+            $this->redirectRoute('monthly_hotspot.create');
+        }
     }
 
     #[On('on-dialog-cancel')]
@@ -50,7 +55,8 @@ class Detail extends Component
 
     public function getProduct()
     {
-        $category = MonthlyHotspotRepository::find($this->objId);
+        $id = Crypt::decrypt($this->objId);
+        $category = MonthlyHotspotRepository::find($id);
         $this->name = $category->name;
         $this->description = $category->description;
         $this->price = $category->price;
@@ -73,10 +79,10 @@ class Detail extends Component
 
             // Course Detail
             if ($this->objId) {
-                MonthlyHotspotRepository::update($this->objId, $validatedData);
+                $id = Crypt::decrypt($this->objId);
+                MonthlyHotspotRepository::update($id, $validatedData);
             } else {
                 $category = MonthlyHotspotRepository::create($validatedData);
-                $this->objId = $category->id;
             }
             DB::commit();
 

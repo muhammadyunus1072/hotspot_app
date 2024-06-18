@@ -87,21 +87,20 @@ class Checkout extends Component
 
     public function store()
     {
-        $this->dispatch('consoleLog', $this->payment_method_id);
-        $this->dispatch('consoleLog', $this->status);
         $this->validate();
         try {
             DB::beginTransaction();
 
             // Course Detail
             if ($this->objId) {
+                $id = Crypt::decrypt($this->objId);
                 $validatedData = [
                     'payment_method_id' => $this->payment_method_id,
                 ];
-                TransactionRepository::update($this->objId, $validatedData);
+                TransactionRepository::update($id, $validatedData);
 
                 $validatedData = [
-                    'transaction_id' => $this->objId,
+                    'transaction_id' => $id,
                     'name' => $this->status,
                     'description' => $this->status,
                 ];
@@ -111,11 +110,11 @@ class Checkout extends Component
                     'user_id' => $this->user_id,
                 ];
                 $transaction = TransactionRepository::create($validatedData);
-                $this->objId = $transaction->id;
+                
 
                 foreach ($this->transaction_details as $transaction_detail) {
                     $validatedData = [
-                        'transaction_id' => $this->objId,
+                        'transaction_id' => $transaction->id,
                         'product_id' => $transaction_detail['product_id'],
                         'qty' => $transaction_detail['qty'],
                     ];

@@ -30,12 +30,10 @@ class Detail extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        if(!$this->objId)
-        {
-            $this->name = "";
-            $this->description = "";
-            $this->price = 0;
-            $this->price_before_discount = 0;
+        if ($this->objId) {
+            $this->redirectRoute('product.edit', $this->objId);
+        } else {
+            $this->redirectRoute('product.create');
         }
     }
 
@@ -57,7 +55,8 @@ class Detail extends Component
 
     public function getProduct()
     {
-        $category = ProductRepository::find($this->objId);
+        $id = Crypt::decrypt($this->objId);
+        $category = ProductRepository::find($id);
         $this->name = $category->name;
         $this->description = $category->description;
         $this->price = NumberFormatter::valueToImask($category->price);
@@ -80,10 +79,11 @@ class Detail extends Component
 
             // Course Detail
             if ($this->objId) {
-                ProductRepository::update($this->objId, $validatedData);
+                $id = Crypt::decrypt($this->objId);
+                ProductRepository::update($id, $validatedData);
             } else {
                 $category = ProductRepository::create($validatedData);
-                $this->objId = $category->id;
+                
             }
             DB::commit();
 

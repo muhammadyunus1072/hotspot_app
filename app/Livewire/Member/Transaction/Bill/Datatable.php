@@ -10,6 +10,7 @@ use App\Traits\WithDatatable;
 use App\Helpers\NumberFormatter;
 use App\Helpers\PermissionHelper;
 use App\Models\TransactionStatus;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Builder;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\Member\Transaction\BillRepository;
@@ -37,12 +38,12 @@ class Datatable extends Component
                 'sortable' => false,
                 'searchable' => false,
                 'render' => function ($item) {
-                      
+                    $id = Crypt::encrypt($item->id);
                     $editHtml = "";
                     if ($this->isCanUpdate) {
                         if($item->isEditable())
                         {
-                            $editUrl = route('bill.edit', $item->id);
+                            $editUrl = route('bill.edit', $id);
                             $editHtml = "<div class='col-auto mb-2'>
                                 <a class='btn btn-success btn-sm' href='$editUrl'>
                                     <i class='ki-duotone ki-dollar fs-2'>

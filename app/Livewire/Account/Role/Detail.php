@@ -4,13 +4,14 @@ namespace App\Livewire\Account\Role;
 
 use Exception;
 use App\Helpers\Alert;
-use App\Helpers\PermissionHelper;
-use App\Repositories\Account\PermissionRepository;
-use App\Repositories\Account\RoleRepository;
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
+use App\Helpers\PermissionHelper;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
+use App\Repositories\Account\RoleRepository;
+use App\Repositories\Account\PermissionRepository;
 
 class Detail extends Component
 {
@@ -42,7 +43,8 @@ class Detail extends Component
         }
 
         if ($this->objId) {
-            $role = RoleRepository::find($this->objId);
+            $id = Crypt::decrypt($this->objId);
+            $role = RoleRepository::find($id);
             $this->name = $role->name;
 
             foreach ($role->permissions as $rolePermission) {
@@ -61,11 +63,10 @@ class Detail extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        $this->name = "";
-        foreach ($this->accesses as $keyAccess => $access) {
-            foreach ($access['permissions'] as $keyPermission => $permission) {
-                $this->accesses[$keyAccess]['permissions'][$keyPermission]['is_checked'] = false;
-            }
+        if ($this->objId) {
+            $this->redirectRoute('role.edit', $this->objId);
+        } else {
+            $this->redirectRoute('role.create');
         }
     }
 
@@ -95,8 +96,9 @@ class Detail extends Component
         try {
             DB::beginTransaction();
             if ($this->objId) {
-                RoleRepository::update($this->objId, $validatedData);
-                $role = RoleRepository::find($this->objId);
+                $id = Crypt::decrypt($this->objId);
+                RoleRepository::update($id, $validatedData);
+                $role = RoleRepository::find($id);
                 $role->syncPermissions($selectedPermissions);
             } else {
                 $role = RoleRepository::create($validatedData);

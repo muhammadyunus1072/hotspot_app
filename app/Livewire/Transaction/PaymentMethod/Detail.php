@@ -9,6 +9,7 @@ use App\Helpers\NumberFormatter;
 use App\Helpers\PermissionHelper;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\Transaction\PaymentMethodRepository;
 
@@ -25,10 +26,10 @@ class Detail extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        if(!$this->objId)
-        {
-            $this->name = "";
-            $this->description = "";
+        if ($this->objId) {
+            $this->redirectRoute('payment_method.edit', $this->objId);
+        } else {
+            $this->redirectRoute('payment_method.create');
         }
     }
 
@@ -50,7 +51,8 @@ class Detail extends Component
 
     public function getPaymentMethod()
     {
-        $category = PaymentMethodRepository::find($this->objId);
+        $id = Crypt::decrypt($this->objId);
+        $category = PaymentMethodRepository::find($id);
         $this->name = $category->name;
         $this->description = $category->description;
     }
@@ -69,10 +71,11 @@ class Detail extends Component
 
             // Course Detail
             if ($this->objId) {
-                PaymentMethodRepository::update($this->objId, $validatedData);
+                $id = Crypt::decrypt($this->objId);
+                PaymentMethodRepository::update($id, $validatedData);
             } else {
                 $category = PaymentMethodRepository::create($validatedData);
-                $this->objId = $category->id;
+                
             }
             DB::commit();
 

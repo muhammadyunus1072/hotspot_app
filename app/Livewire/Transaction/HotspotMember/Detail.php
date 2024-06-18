@@ -9,6 +9,7 @@ use App\Helpers\NumberFormatter;
 use App\Helpers\PermissionHelper;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 use App\Repositories\Account\UserRepository;
 use App\Repositories\Transaction\HotspotMemberRepository;
 
@@ -28,10 +29,11 @@ class Detail extends Component
     #[On('on-dialog-confirm')]
     public function onDialogConfirm()
     {
-        $this->name = "";
-        $this->description = "";
-        $this->price = 0;
-        $this->price_before_discount = 0;
+        if ($this->objId) {
+            $this->redirectRoute('hotspot_member.edit', $this->objId);
+        } else {
+            $this->redirectRoute('hotspot_member.create');
+        }
     }
 
     #[On('on-dialog-cancel')]
@@ -46,7 +48,8 @@ class Detail extends Component
         $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_PRODUCT, PermissionHelper::TYPE_UPDATE));
         if($this->objId)
         {
-            $hotspot_member = HotspotMemberRepository::findWithDetail($this->objId);
+            $id = Crypt::decrypt($this->objId);
+            $hotspot_member = HotspotMemberRepository::findWithDetail($id);
             $this->user_id = $hotspot_member->member_id;
             $this->user_text = $hotspot_member->member_name;
             $this->product_id = $hotspot_member->product_id;
@@ -76,10 +79,11 @@ class Detail extends Component
 
             // Course Detail
             if ($this->objId) {
-                HotspotMemberRepository::update($this->objId, $validatedData);
+                $id = Crypt::decrypt($this->objId);
+                HotspotMemberRepository::update($id, $validatedData);
             } else {
                 $category = HotspotMemberRepository::create($validatedData);
-                $this->objId = $category->id;
+                
             }
             DB::commit();
 
