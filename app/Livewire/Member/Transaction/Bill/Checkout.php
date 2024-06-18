@@ -61,7 +61,8 @@ class Checkout extends Component
             $id = Crypt::decrypt($this->objId);
             $transaction = BillRepository::findTransaction($id);
             if ($transaction->payment_method_id && $transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
-                $this->snapToken = [
+                if (!$transaction->snap_token) {
+                    $snapToken = MidtransPayment::getSnapToken(
                         $transaction->id,
                         $transaction->details->sum('product_price'),
                         [
@@ -70,28 +71,17 @@ class Checkout extends Component
                             'email' => $transaction->user->email,
                             'phone' => $transaction->user->phone,
                         ]
+                    );
+
+                    $validatedData = [
+                        'snap_token' => $snapToken,
                     ];
-                // if (!$transaction->snap_token) {
-                //     $snapToken = MidtransPayment::getSnapToken(
-                //         $transaction->id,
-                //         $transaction->details->sum('product_price'),
-                //         [
-                //             'first_name' => $transaction->user->name,
-                //             'last_name' => '',
-                //             'email' => $transaction->user->email,
-                //             'phone' => $transaction->user->phone,
-                //         ]
-                //     );
+                    TransactionRepository::update($id, $validatedData);
+                    $this->snapToken = $snapToken;
+                }else{
 
-                //     $validatedData = [
-                //         'snap_token' => $snapToken,
-                //     ];
-                //     TransactionRepository::update($id, $validatedData);
-                //     $this->snapToken = $snapToken;
-                // }else{
-
-                //     $this->snapToken = $transaction->snap_token;
-                // }
+                    $this->snapToken = $transaction->snap_token;
+                }
             } 
             $this->transaction = $transaction;
         }

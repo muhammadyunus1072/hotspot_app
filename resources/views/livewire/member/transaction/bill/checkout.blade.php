@@ -2,7 +2,7 @@
     <script type="text/javascript" src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 @endpush
 <div class="page-section">
-    {{dd($snapToken)}}
+    
     <div class="page-separator">
         <div class="page-separator__text">{{ __('Transaction Histories') }}</div>
     </div>
@@ -174,19 +174,18 @@
 @push('js')
     <script>
         Livewire.on('midtransCheckout', (snapToken) => {
-            console.log(snapToken[0])
-            // window.snap.pay(snapToken[0], {
+            window.snap.pay(snapToken[0], {
                 
-            //     onSuccess: function(result) {
-            //         window.location.href = "{{ route('bill.index') }}";
-            //     },
-            //     onError: function(result) {
-            //         Livewire.emit('onFailSweetAlert', "{{ __('Payment Fail') }}");
-            //     },
-            //     onClose: function() {
-            //         Livewire.emit('onFailSweetAlert', "{{ __('Payment Closed') }}");
-            //     }
-            // });
+                onSuccess: function(result) {
+                    window.location.href = "{{ route('bill.index') }}";
+                },
+                onError: function(result) {
+                    Livewire.emit('onFailSweetAlert', "{{ __('Payment Fail') }}");
+                },
+                onClose: function() {
+                    Livewire.emit('onFailSweetAlert', "{{ __('Payment Closed') }}");
+                }
+            });
         });
         
         window.addEventListener('openConfirmCancellationModal', event => {
