@@ -62,7 +62,7 @@ class Detail extends Component
         {
             $id = Crypt::decrypt($this->objId);
             $transaction = TransactionRepository::findWithDetail($id)->toArray();
-            if($transaction['payment_method_id'] && $transaction['payment_method_id'] != PaymentMethod::MIDTRANS_ID)
+            if($transaction['payment_method_id'] && $transaction['payment_method_id'] == PaymentMethod::MIDTRANS_ID)
             {
                 $this->redirectRoute('bill.checkout', $this->objId);
             }
