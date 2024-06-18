@@ -57,7 +57,8 @@ class Checkout extends Component
         $this->isCanUpdate = $authUser->hasPermissionTo(PermissionHelper::transform(PermissionHelper::ACCESS_PRODUCT, PermissionHelper::TYPE_UPDATE));
         if($this->objId)
         {
-            $transaction = BillRepository::findTransaction($this->objId);
+            $id = Crypt::decrypt($this->objId);
+            $transaction = BillRepository::findTransaction($id);
             if ($transaction->payment_method_id && $transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
                 if (!$transaction->snap_token) {
                     $snapToken = MidtransPayment::getSnapToken(
