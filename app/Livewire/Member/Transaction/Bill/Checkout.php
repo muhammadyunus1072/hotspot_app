@@ -62,7 +62,7 @@ class Checkout extends Component
             $transaction = BillRepository::findTransaction($id);
             if ($transaction->payment_method_id && $transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
                 $this->snapToken = [
-                    $transaction->id,
+                        $transaction->id,
                         $transaction->details->sum('product_price'),
                         [
                             'first_name' => $transaction->user->name,
@@ -91,7 +91,7 @@ class Checkout extends Component
                 // }else{
 
                 //     $this->snapToken = $transaction->snap_token;
-                }
+                // }
             } 
             $this->transaction = $transaction;
         }
