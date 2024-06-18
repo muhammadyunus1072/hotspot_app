@@ -119,7 +119,7 @@ class Detail extends Component
                 $validatedData = [
                     'payment_method_id' => $this->payment_method_id,
                 ];
-                $transaction =TransactionRepository::update($id, $validatedData);
+                $transaction = TransactionRepository::update($id, $validatedData);
 
                 $validatedData = [
                     'transaction_id' => $id,
@@ -145,7 +145,7 @@ class Detail extends Component
             }
             DB::commit();
 
-            if($transaction->payment_method_id && $transaction->payment_method_id != PaymentMethod::MIDTRANS_ID)
+            if($transaction && $this->payment_method_id != PaymentMethod::MIDTRANS_ID)
             {
                 $this->redirectRoute('bill.checkout', $this->objId);
             }else{
