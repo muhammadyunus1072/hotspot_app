@@ -62,9 +62,10 @@ class Checkout extends Component
             $transaction = BillRepository::findTransaction($id);
             if ($transaction->payment_method_id && $transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
                 if (!$transaction->snap_token) {
+                    $amount = $transaction->details->sum('product_price');
                     $snapToken = MidtransPayment::getSnapToken(
                         $transaction->id,
-                        $transaction->details->sum('product_price'),
+                        $amount,
                         [
                             'first_name' => $transaction->user->name,
                             'last_name' => '',
