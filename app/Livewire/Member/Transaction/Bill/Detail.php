@@ -145,7 +145,7 @@ class Detail extends Component
             }
             DB::commit();
 
-            if($transaction->payment_method_id != PaymentMethod::MIDTRANS_ID)
+            if($transaction->payment_method_id && $transaction->payment_method_id != PaymentMethod::MIDTRANS_ID)
             {
                 $this->redirectRoute('bill.checkout', $this->objId);
             }else{
