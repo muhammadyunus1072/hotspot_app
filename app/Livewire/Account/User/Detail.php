@@ -69,9 +69,9 @@ class Detail extends Component
     public function store()
     {
         $this->validate();
-
+        $id = Crypt::decrypt($this->objId);
         $otherUser = UserRepository::findByEmail($this->email);
-        if (!empty($otherUser) && $otherUser->id != $this->objId) {
+        if ($otherUser->id != $id && !empty($otherUser)) {
             Alert::fail($this, "Gagal", "Email telah digunakan pada akun yang lainnya. Silahkan gunakan email lain.");
             return;
         }
@@ -93,7 +93,7 @@ class Detail extends Component
         try {
             DB::beginTransaction();
             if ($this->objId) {
-                $id = Crypt::decrypt($this->objId);
+                
                 UserRepository::update($id, $validatedData);
                 $user = UserRepository::find($id);
                 $user->syncRoles($this->role);
