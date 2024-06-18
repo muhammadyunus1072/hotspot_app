@@ -173,18 +173,19 @@
 @push('js')
     <script>
         Livewire.on('midtransCheckout', (snapToken) => {
-            window.snap.pay(snapToken[0], {
+            console.log(snapToken[0])
+            // window.snap.pay(snapToken[0], {
                 
-                onSuccess: function(result) {
-                    window.location.href = "{{ route('bill.index') }}";
-                },
-                onError: function(result) {
-                    Livewire.emit('onFailSweetAlert', "{{ __('Payment Fail') }}");
-                },
-                onClose: function() {
-                    Livewire.emit('onFailSweetAlert', "{{ __('Payment Closed') }}");
-                }
-            });
+            //     onSuccess: function(result) {
+            //         window.location.href = "{{ route('bill.index') }}";
+            //     },
+            //     onError: function(result) {
+            //         Livewire.emit('onFailSweetAlert', "{{ __('Payment Fail') }}");
+            //     },
+            //     onClose: function() {
+            //         Livewire.emit('onFailSweetAlert', "{{ __('Payment Closed') }}");
+            //     }
+            // });
         });
         
         window.addEventListener('openConfirmCancellationModal', event => {
