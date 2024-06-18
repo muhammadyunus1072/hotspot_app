@@ -75,7 +75,7 @@ class Checkout extends Component
                     );
 
                     $validatedData = [
-                        'snap_token' => $snap_token,
+                        'snap_token' => $snapToken,
                     ];
                     TransactionRepository::update($id, $validatedData);
                     $this->snapToken = $snapToken;
