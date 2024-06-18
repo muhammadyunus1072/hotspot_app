@@ -58,7 +58,7 @@ class Checkout extends Component
         if($this->objId)
         {
             $transaction = BillRepository::findTransaction($this->objId);
-            if ($transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
+            if ($transaction->payment_method_id && $transaction->payment_method_id == PaymentMethod::MIDTRANS_ID) {
                 if (!$transaction->snap_token) {
                     $snapToken = MidtransPayment::getSnapToken(
                         $transaction->id,
