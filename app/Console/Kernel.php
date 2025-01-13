@@ -23,5 +23,12 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+
+        // return env('MAIL_FROM_ADDRESS', 'hello@example.com');
+        $to = 'arashiyunus@gmail.com'; // Use your verified email
+        // Mail::raw('This is a test email from Amazon SES in Sydney (ap-southeast-2) region.', function ($message) use ($to) {
+        //     $message->to($to)
+        //             ->subject('Test Email from SES');
+        // });
     }
 }

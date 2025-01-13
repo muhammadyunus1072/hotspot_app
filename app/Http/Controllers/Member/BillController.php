@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\Member\Transaction\BillRepository;
